@@ -5,13 +5,10 @@ function getNewCar() {
   };
 }
 
-var honda = getNewCar()
-
-var cars = []
 
 function addCar(cars, newCar) {
   cars.push(newCar)
-  return 'Adding new car to fleat. Fleet size is now ' + cars.length;
+  return 'Adding new car to fleet. Fleet size is now ' + cars.length;
 }
 
 function pickUpPassenger(car) {
@@ -54,3 +51,41 @@ function dropOffPassengers(car) {
   car.passengers = 0
   return 'Drop off ' + previousPassengers + ' passengers.';
 }
+
+function act(car) {
+  distanceBetweenCities = 50
+
+  if (car.gas < 20) {
+    return fillUpGas(car);
+  } else if (car.passengers < 3) {
+    return pickUpPassenger(car);
+  } else {
+      if (car.gas < distanceBetweenCities) {
+        return fillUpGas(car);
+      }
+      droveTo = drive(car, distanceBetweenCities)
+      passengersDropped = dropOffPassengers(car)
+      return droveTo + ' ' + passengersDropped;
+    }
+}
+
+function commandFleet(cars) {
+  for (var i = 0; i < cars.length; i++) {
+    var car = cars[i]
+    action = act(car)
+    console.log('Car ' + (i + 1) + ': ' + action);
+  }
+  console.log( '---');
+}
+
+function addOneCarPerDay(cars, numDays) {
+  for (var i = 0; i < numDays; i++) {
+    var newCar = getNewCar()
+    console.log(addCar(cars, newCar));
+    commandFleet(cars);
+  }
+}
+
+cars = []
+
+addOneCarPerDay(cars, 10)
